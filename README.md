@@ -4,7 +4,7 @@
 
 **StudyFree** is a Quizlet-like flashcard study app that runs entirely in a single HTML file — no server, no login, no cost. Just open it and start learning.
 
-🌐 **Live Site:** [yallcode.github.io/studyfree](https://yallcode.github.io/studyfree)
+🌐 **Live Site:** [yallcode.github.io/studyfree](https://yallcode.github.io/StudyFree/)
 
 ---
 
@@ -32,11 +32,11 @@
 No installation needed. Just open the file!
 
 ### Option 1 — Use the live site
-Visit [yallcode.github.io/studyfree](https://yallcode.github.io/studyfree) in any browser.
+Visit [yallcode.github.io/studyfree](https://yallcode.github.io/StudyFree/) in any browser.
 
 ### Option 2 — Run it locally
 ```bash
-git clone https://github.com/yallcode/studyfree.git
+git clone https://github.com/yallcode/StudyFree.git
 cd studyfree
 # Just open index.html in your browser — done!
 ```
@@ -108,7 +108,7 @@ Contributions are welcome! If you have an idea for a new study mode or feature:
 
 Made by **YallCode**
 
-- 🌐 [yallcode.github.io/YallaYCode](https://yallcode.github.io/YallaYCode)
+- 🌐 [yallcode.github.io/YallaYCode](https://yallcode.github.io/YallaYCode/)
 - 🐦 [@YallCode](https://twitter.com/YallCode) on X/Twitter
 - 📺 [@YallaYCode](https://youtube.com/@YallaYCode) on YouTube
 - 📧 yallcc.info@gmail.com
