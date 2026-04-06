@@ -10,14 +10,20 @@
 
 ## ✨ Features
 
-- **Flashcards** — Flip cards to reveal definitions, shuffle, and track progress
-- **Quiz Mode** — Multiple choice questions with instant feedback and a final score
-- **Match Game** — Race against the clock to match terms with their definitions
-- **All Terms View** — Browse every card in a set at a glance
-- **Create & Edit Sets** — Add, edit, or delete your own study sets
-- **Search** — Instantly filter through all your sets
-- **100% Offline** — Everything saves to your browser's localStorage, no internet needed after loading
-- **Mobile Friendly** — Works great on phones and tablets
+- **Flashcards** — Flip cards, track progress, shuffle, star cards, full keyboard shortcuts
+- **Learn Mode** — Mix of multiple choice and written questions, adapts each round
+- **Write Mode** — Type answers yourself, see what you missed
+- **Spell Mode** — Hear the term spoken aloud (TTS), type its definition
+- **Test Mode** — Full test with multiple choice, true/false, and written questions mixed
+- **Match Game** — Race the clock to match pairs; adjustable size (6/8/10 cards)
+- **Gravity Game** — Terms fall from the sky, type definitions before they hit the ground
+- **All Terms** — Browse every card; filter by starred
+- **Starred Cards** — Star any card, study only starred in any mode
+- **Settings** — Swap sides, shuffle, Know It buttons, flip answer direction
+- **Import** — Paste tab/pipe/comma-separated pairs to build sets instantly
+- **Export** — Copy your entire set to clipboard in one click
+- **100% Offline** — Everything in localStorage, no internet needed after first load
+- **Mobile Friendly** — Fully responsive on phones and tablets
 
 ---
 
@@ -105,7 +111,6 @@ Made by **YallCode**
 - 🌐 [yallcode.github.io/YallaYCode](https://yallcode.github.io/YallaYCode)
 - 🐦 [@YallCode](https://twitter.com/YallCode) on X/Twitter
 - 📺 [@YallaYCode](https://youtube.com/@YallaYCode) on YouTube
-- 💬 [Discord](https://discord.gg/yUe8kE5fRF)
 - 📧 yallcc.info@gmail.com
 
 ---
