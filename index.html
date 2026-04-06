@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>StudyFree — Learn Without Limits</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0e1a;
+    --surface: #111827;
+    --surface2: #1a2235;
+    --border: rgba(255,255,255,0.07);
+    --border2: rgba(255,255,255,0.14);
+    --accent: #00e5b4;
+    --accent2: #0070f3;
+    --accent3: #ff6b6b;
+    --text: #f0f4ff;
+    --muted: #8899b4;
+    --muted2: #4a5a74;
+    --radius: 14px;
+    --radius-sm: 8px;
+    --font-display: 'Syne', sans-serif;
+    --font-body: 'DM Sans', sans-serif;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font-family: var(--font-body); min-height: 100vh; }
+
+  /* NAV */
+  nav {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1rem 2rem; border-bottom: 1px solid var(--border);
+    position: sticky; top: 0; background: rgba(10,14,26,0.92); backdrop-filter: blur(12px); z-index: 100;
+  }
+  .logo { font-family: var(--font-display); font-weight: 800; font-size: 1.4rem; color: var(--text); cursor: pointer; }
+  .logo span { color: var(--accent); }
+  .nav-btn {
+    background: var(--accent); color: #0a0e1a; border: none; border-radius: var(--radius-sm);
+    padding: .5rem 1.1rem; font-family: var(--font-body); font-weight: 600; font-size: .9rem;
+    cursor: pointer; transition: opacity .2s;
+  }
+  .nav-btn:hover { opacity: .85; }
+
+  /* PAGES */
+  .page { display: none; padding: 2rem; max-width: 1100px; margin: 0 auto; }
+  .page.active { display: block; }
+
+  /* HOME */
+  .hero { text-align: center; padding: 4rem 1rem 3rem; }
+  .hero h1 { font-family: var(--font-display); font-size: clamp(2.2rem, 5vw, 4rem); font-weight: 800; line-height: 1.1; margin-bottom: 1rem; }
+  .hero h1 em { color: var(--accent); font-style: normal; }
+  .hero p { color: var(--muted); font-size: 1.1rem; max-width: 500px; margin: 0 auto 2rem; line-height: 1.7; }
+  .hero-btns { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+  .btn-primary {
+    background: var(--accent); color: #0a0e1a; border: none; border-radius: var(--radius-sm);
+    padding: .75rem 1.8rem; font-family: var(--font-body); font-weight: 600; font-size: 1rem;
+    cursor: pointer; transition: transform .15s, opacity .2s;
+  }
+  .btn-primary:hover { transform: translateY(-1px); opacity: .9; }
+  .btn-secondary {
+    background: transparent; color: var(--text); border: 1px solid var(--border2); border-radius: var(--radius-sm);
+    padding: .75rem 1.8rem; font-family: var(--font-body); font-weight: 500; font-size: 1rem;
+    cursor: pointer; transition: background .2s;
+  }
+  .btn-secondary:hover { background: var(--surface); }
+
+  /* SETS GRID */
+  .section-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.2rem; }
+  .section-head h2 { font-family: var(--font-display); font-weight: 700; font-size: 1.3rem; }
+  .sets-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 1rem; }
+  .set-card {
+    background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+    padding: 1.2rem 1.4rem; cursor: pointer; transition: border-color .2s, transform .15s;
+    display: flex; flex-direction: column; gap: .5rem;
+  }
+  .set-card:hover { border-color: var(--accent); transform: translateY(-2px); }
+  .set-card-title { font-family: var(--font-display); font-weight: 700; font-size: 1rem; }
+  .set-card-meta { color: var(--muted); font-size: .85rem; }
+  .set-card-preview { display: flex; gap: .4rem; flex-wrap: wrap; margin-top: .4rem; }
+  .set-tag {
+    background: var(--surface2); color: var(--muted); font-size: .75rem;
+    padding: .2rem .6rem; border-radius: 99px; border: 1px solid var(--border);
+  }
+  .empty-state { text-align: center; padding: 3rem 1rem; color: var(--muted); }
+  .empty-state .big { font-size: 3rem; margin-bottom: 1rem; }
+
+  /* SEARCH */
+  .search-bar {
+    width: 100%; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-sm);
+    color: var(--text); font-family: var(--font-body); font-size: .95rem; padding: .7rem 1rem;
+    outline: none; transition: border-color .2s; margin-bottom: 1.5rem;
+  }
+  .search-bar:focus { border-color: var(--accent); }
+
+  /* CREATE PAGE */
+  .page-header { margin-bottom: 2rem; }
+  .page-header h2 { font-family: var(--font-display); font-weight: 800; font-size: 1.8rem; margin-bottom: .3rem; }
+  .page-header p { color: var(--muted); }
+  .form-group { margin-bottom: 1.2rem; }
+  .form-group label { display: block; font-size: .85rem; color: var(--muted); margin-bottom: .4rem; font-weight: 500; }
+  .form-input {
+    width: 100%; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-sm);
+    color: var(--text); font-family: var(--font-body); font-size: .95rem; padding: .7rem 1rem;
+    outline: none; transition: border-color .2s;
+  }
+  .form-input:focus { border-color: var(--accent); }
+  .cards-list { display: flex; flex-direction: column; gap: .8rem; margin: 1.5rem 0; }
+  .card-row {
+    display: grid; grid-template-columns: 1fr 1fr auto; gap: .8rem; align-items: center;
+    background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: .8rem 1rem;
+  }
+  .card-num { color: var(--muted); font-size: .8rem; font-weight: 600; min-width: 20px; }
+  .card-del-btn {
+    background: none; border: none; color: var(--muted2); cursor: pointer; font-size: 1.1rem;
+    padding: .2rem .4rem; border-radius: 4px; transition: color .2s;
+  }
+  .card-del-btn:hover { color: var(--accent3); }
+  .add-card-btn {
+    width: 100%; background: var(--surface2); border: 1px dashed var(--border2); border-radius: var(--radius-sm);
+    color: var(--muted); font-family: var(--font-body); font-size: .95rem; padding: .9rem;
+    cursor: pointer; transition: border-color .2s, color .2s;
+  }
+  .add-card-btn:hover { border-color: var(--accent); color: var(--accent); }
+  .form-actions { display: flex; gap: .8rem; margin-top: 1.5rem; }
+
+  /* SET VIEW PAGE */
+  .set-view-header { margin-bottom: 2rem; }
+  .set-view-header h2 { font-family: var(--font-display); font-weight: 800; font-size: 2rem; margin-bottom: .4rem; }
+  .set-view-header p { color: var(--muted); }
+  .mode-tabs { display: flex; gap: .6rem; flex-wrap: wrap; margin-bottom: 2rem; }
+  .mode-tab {
+    background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-sm);
+    color: var(--muted); padding: .5rem 1.1rem; font-family: var(--font-body); font-size: .9rem;
+    cursor: pointer; transition: all .2s;
+  }
+  .mode-tab.active, .mode-tab:hover { border-color: var(--accent); color: var(--accent); background: rgba(0,229,180,.07); }
+  .set-actions { display: flex; gap: .6rem; margin-left: auto; }
+  .mode-tabs-row { display: flex; align-items: center; gap: .6rem; flex-wrap: wrap; margin-bottom: 2rem; }
+
+  /* FLASHCARD STUDY */
+  .flashcard-container { perspective: 1200px; max-width: 680px; margin: 0 auto; }
+  .flashcard-wrap { position: relative; height: 320px; cursor: pointer; }
+  .flashcard {
+    position: absolute; inset: 0; border-radius: var(--radius); transition: transform .5s;
+    transform-style: preserve-3d;
+  }
+  .flashcard.flipped { transform: rotateY(180deg); }
+  .flashcard-face {
+    position: absolute; inset: 0; backface-visibility: hidden; border-radius: var(--radius);
+    display: flex; align-items: center; justify-content: center; padding: 2rem;
+    font-size: 1.4rem; font-weight: 300; text-align: center; line-height: 1.5;
+  }
+  .flashcard-front { background: var(--surface); border: 1px solid var(--border2); }
+  .flashcard-back { background: var(--surface2); border: 1px solid var(--accent); transform: rotateY(180deg); }
+  .flashcard-hint { text-align: center; color: var(--muted); font-size: .85rem; margin-top: 1rem; }
+  .card-nav { display: flex; align-items: center; justify-content: center; gap: 1.5rem; margin: 1.5rem 0; }
+  .card-nav-btn {
+    background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-sm);
+    color: var(--text); padding: .6rem 1.4rem; font-size: .95rem; cursor: pointer; transition: border-color .2s;
+  }
+  .card-nav-btn:hover { border-color: var(--accent); }
+  .card-nav-btn:disabled { opacity: .3; cursor: not-allowed; }
+  .card-counter { color: var(--muted); font-size: .95rem; min-width: 70px; text-align: center; }
+  .progress-bar-wrap { background: var(--surface); border-radius: 99px; height: 4px; margin-bottom: 1.5rem; overflow: hidden; }
+  .progress-bar { background: var(--accent); height: 100%; border-radius: 99px; transition: width .3s; }
+
+  /* QUIZ MODE */
+  .quiz-question { font-size: 1.3rem; font-weight: 400; line-height: 1.5; margin-bottom: 1.8rem; }
+  .quiz-options { display: grid; grid-template-columns: 1fr 1fr; gap: .8rem; max-width: 680px; }
+  .quiz-opt {
+    background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-sm);
+    color: var(--text); padding: 1rem 1.2rem; font-family: var(--font-body); font-size: .95rem;
+    cursor: pointer; transition: all .2s; text-align: left; line-height: 1.4;
+  }
+  .quiz-opt:hover:not(:disabled) { border-color: var(--accent2); background: rgba(0,112,243,.07); }
+  .quiz-opt.correct { border-color: var(--accent) !important; background: rgba(0,229,180,.1) !important; color: var(--accent) !important; }
+  .quiz-opt.wrong { border-color: var(--accent3) !important; background: rgba(255,107,107,.1) !important; color: var(--accent3) !important; }
+  .quiz-opt:disabled { cursor: not-allowed; }
+  .quiz-feedback { margin-top: 1.2rem; font-size: .95rem; min-height: 1.5rem; }
+  .quiz-feedback.ok { color: var(--accent); }
+  .quiz-feedback.bad { color: var(--accent3); }
+  .quiz-next-btn {
+    margin-top: 1.2rem; background: var(--accent); color: #0a0e1a; border: none; border-radius: var(--radius-sm);
+    padding: .65rem 1.5rem; font-family: var(--font-body); font-weight: 600; cursor: pointer; display: none;
+  }
+  .quiz-score { font-family: var(--font-display); font-size: 3rem; font-weight: 800; color: var(--accent); }
+
+  /* MATCH GAME */
+  .match-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: .7rem; max-width: 700px; }
+  .match-card {
+    background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-sm);
+    padding: .8rem 1rem; cursor: pointer; font-size: .85rem; text-align: center; line-height: 1.4;
+    transition: all .2s; min-height: 70px; display: flex; align-items: center; justify-content: center;
+    user-select: none;
+  }
+  .match-card:hover { border-color: var(--accent2); }
+  .match-card.selected { border-color: var(--accent); background: rgba(0,229,180,.1); color: var(--accent); }
+  .match-card.matched { border-color: var(--muted2); background: var(--surface2); color: var(--muted2); cursor: default; }
+  .match-card.wrong-flash { border-color: var(--accent3); background: rgba(255,107,107,.1); }
+  .match-timer { font-family: var(--font-display); font-size: 1.5rem; font-weight: 700; color: var(--accent); margin-bottom: 1rem; }
+
+  /* CARDS LIST IN SET VIEW */
+  .terms-list { display: flex; flex-direction: column; gap: .6rem; }
+  .term-item {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;
+    background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 1rem 1.2rem;
+  }
+  .term-item .term { font-weight: 500; }
+  .term-item .def { color: var(--muted); font-size: .95rem; }
+  .divider { width: 1px; background: var(--border); }
+
+  /* RESULTS */
+  .results-card {
+    background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+    padding: 2.5rem; text-align: center; max-width: 500px; margin: 0 auto;
+  }
+  .results-card h3 { font-family: var(--font-display); font-size: 1.5rem; margin-bottom: 1rem; }
+  .results-card p { color: var(--muted); margin-bottom: 1.5rem; }
+  .results-btns { display: flex; gap: .8rem; justify-content: center; flex-wrap: wrap; }
+
+  /* TOAST */
+  #toast {
+    position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%) translateY(100px);
+    background: var(--surface2); border: 1px solid var(--border2); border-radius: var(--radius-sm);
+    padding: .7rem 1.4rem; font-size: .9rem; transition: transform .3s; z-index: 9999; white-space: nowrap;
+  }
+  #toast.show { transform: translateX(-50%) translateY(0); }
+
+  /* UTIL */
+  .back-btn {
+    background: none; border: none; color: var(--muted); font-family: var(--font-body); font-size: .9rem;
+    cursor: pointer; margin-bottom: 1.5rem; display: inline-flex; align-items: center; gap: .4rem;
+    transition: color .2s;
+  }
+  .back-btn:hover { color: var(--text); }
+  .hidden { display: none !important; }
+  .text-accent { color: var(--accent); }
+  .shimmer-bar { background: var(--surface2); border-radius: 4px; animation: shimmer 1.5s infinite; }
+  @keyframes shimmer { 0%,100%{opacity:.5} 50%{opacity:1} }
+  @media (max-width: 600px) {
+    nav { padding: 1rem; }
+    .page { padding: 1rem; }
+    .quiz-options { grid-template-columns: 1fr; }
+    .term-item { grid-template-columns: 1fr; }
+    .card-row { grid-template-columns: 1fr auto; }
+    .card-row .card-num { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="logo" onclick="showPage('home')">Study<span>Free</span></div>
+  <button class="nav-btn" onclick="showPage('create')">+ Create Set</button>
+</nav>
+
+<!-- HOME PAGE -->
+<div class="page active" id="page-home">
+  <div class="hero">
+    <h1>Learn anything,<br><em>totally free.</em></h1>
+    <p>Flashcards, quizzes, and matching games — no account needed, no paywall, ever.</p>
+    <div class="hero-btns">
+      <button class="btn-primary" onclick="showPage('create')">Create a Study Set</button>
+      <button class="btn-secondary" onclick="document.getElementById('my-sets').scrollIntoView({behavior:'smooth'})">Browse My Sets</button>
+    </div>
+  </div>
+  <div id="my-sets">
+    <div class="section-head">
+      <h2>My Sets</h2>
+    </div>
+    <input class="search-bar" placeholder="Search your sets..." id="search-input" oninput="renderSets()">
+    <div class="sets-grid" id="sets-grid"></div>
+  </div>
+</div>
+
+<!-- CREATE PAGE -->
+<div class="page" id="page-create">
+  <button class="back-btn" onclick="showPage('home')">← Back</button>
+  <div class="page-header">
+    <h2 id="create-title">Create a Study Set</h2>
+    <p>Add terms and definitions to get started</p>
+  </div>
+  <div class="form-group">
+    <label>Set Title</label>
+    <input class="form-input" id="set-title" placeholder="e.g. Biology Chapter 3" maxlength="80">
+  </div>
+  <div class="form-group">
+    <label>Description (optional)</label>
+    <input class="form-input" id="set-desc" placeholder="What's this set about?">
+  </div>
+  <div class="cards-list" id="cards-list"></div>
+  <button class="add-card-btn" onclick="addCardRow()">+ Add Card</button>
+  <div class="form-actions">
+    <button class="btn-primary" onclick="saveSet()">Save Set</button>
+    <button class="btn-secondary" onclick="showPage('home')">Cancel</button>
+    <button class="btn-secondary" id="delete-set-btn" style="margin-left:auto;color:var(--accent3);border-color:var(--accent3);display:none" onclick="deleteCurrentSet()">Delete Set</button>
+  </div>
+</div>
+
+<!-- SET VIEW PAGE -->
+<div class="page" id="page-set">
+  <button class="back-btn" onclick="showPage('home')">← Back</button>
+  <div class="set-view-header">
+    <h2 id="set-view-title"></h2>
+    <p id="set-view-meta"></p>
+  </div>
+  <div class="mode-tabs-row">
+    <div class="mode-tabs">
+      <button class="mode-tab active" onclick="setMode('flashcards')">Flashcards</button>
+      <button class="mode-tab" onclick="setMode('quiz')">Quiz</button>
+      <button class="mode-tab" onclick="setMode('match')">Match</button>
+      <button class="mode-tab" onclick="setMode('list')">All Terms</button>
+    </div>
+    <div class="set-actions">
+      <button class="btn-secondary" style="padding:.4rem .9rem;font-size:.85rem" onclick="editCurrentSet()">Edit</button>
+    </div>
+  </div>
+
+  <!-- FLASHCARDS MODE -->
+  <div id="mode-flashcards">
+    <div class="progress-bar-wrap"><div class="progress-bar" id="fc-progress"></div></div>
+    <div class="flashcard-container">
+      <div class="flashcard-wrap" onclick="flipCard()">
+        <div class="flashcard" id="flashcard">
+          <div class="flashcard-face flashcard-front" id="fc-front"></div>
+          <div class="flashcard-face flashcard-back" id="fc-back"></div>
+        </div>
+      </div>
+      <p class="flashcard-hint">Click the card to flip</p>
+      <div class="card-nav">
+        <button class="card-nav-btn" id="fc-prev" onclick="fcNav(-1)">← Prev</button>
+        <span class="card-counter" id="fc-counter"></span>
+        <button class="card-nav-btn" id="fc-next" onclick="fcNav(1)">Next →</button>
+      </div>
+      <div style="display:flex;gap:.8rem;justify-content:center;margin-top:.5rem">
+        <button class="btn-secondary" style="font-size:.85rem;padding:.4rem .9rem" onclick="shuffleCards()">Shuffle</button>
+        <button class="btn-secondary" style="font-size:.85rem;padding:.4rem .9rem" onclick="fcReset()">Restart</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- QUIZ MODE -->
+  <div id="mode-quiz" class="hidden">
+    <div class="progress-bar-wrap"><div class="progress-bar" id="quiz-progress"></div></div>
+    <p id="quiz-q-counter" style="color:var(--muted);font-size:.85rem;margin-bottom:.8rem"></p>
+    <div id="quiz-question" class="quiz-question"></div>
+    <div id="quiz-options" class="quiz-options"></div>
+    <div id="quiz-feedback" class="quiz-feedback"></div>
+    <button id="quiz-next" class="quiz-next-btn" onclick="quizNext()">Next Question →</button>
+    <div id="quiz-results" class="hidden">
+      <div class="results-card">
+        <h3>Quiz Complete!</h3>
+        <div class="quiz-score" id="quiz-score-val"></div>
+        <p id="quiz-score-msg" style="margin-top:.5rem"></p>
+        <div class="results-btns">
+          <button class="btn-primary" onclick="startQuiz()">Try Again</button>
+          <button class="btn-secondary" onclick="setMode('flashcards')">Flashcards</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MATCH MODE -->
+  <div id="mode-match" class="hidden">
+    <div style="display:flex;align-items:center;gap:1rem;margin-bottom:1rem">
+      <div class="match-timer" id="match-timer">0.0s</div>
+      <button class="btn-secondary" style="font-size:.85rem;padding:.4rem .9rem" onclick="startMatch()">Restart</button>
+    </div>
+    <div class="match-grid" id="match-grid"></div>
+    <div id="match-results" class="hidden" style="margin-top:1.5rem">
+      <div class="results-card">
+        <h3>Matched!</h3>
+        <div class="quiz-score" id="match-time-val"></div>
+        <p>Keep practicing to beat your time!</p>
+        <div class="results-btns">
+          <button class="btn-primary" onclick="startMatch()">Play Again</button>
+          <button class="btn-secondary" onclick="setMode('flashcards')">Flashcards</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- LIST MODE -->
+  <div id="mode-list" class="hidden">
+    <div class="terms-list" id="terms-list"></div>
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<script>
+// ---- STATE ----
+let sets = JSON.parse(localStorage.getItem('sf_sets') || '[]');
+let currentSetId = null;
+let currentSet = null;
+let editingId = null;
+
+// FLASHCARD state
+let fcCards = [], fcIndex = 0, fcFlipped = false;
+
+// QUIZ state
+let quizCards = [], quizIndex = 0, quizScore = 0, quizAnswered = false;
+
+// MATCH state
+let matchTimer = null, matchStartTime = 0, matchSelected = null, matchMatched = 0;
+
+// ---- UTILS ----
+function save() { localStorage.setItem('sf_sets', JSON.stringify(sets)); }
+function uid() { return Date.now().toString(36) + Math.random().toString(36).slice(2); }
+function shuffle(arr) { for(let i=arr.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[arr[i],arr[j]]=[arr[j],arr[i]];}return arr; }
+function toast(msg) {
+  const t = document.getElementById('toast'); t.textContent = msg; t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2200);
+}
+
+// ---- PAGES ----
+function showPage(name) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('page-' + name).classList.add('active');
+  if(name === 'home') renderSets();
+  if(name === 'create') initCreate();
+  window.scrollTo(0,0);
+}
+
+// ---- HOME ----
+function renderSets() {
+  const q = document.getElementById('search-input').value.toLowerCase();
+  const filtered = sets.filter(s => s.title.toLowerCase().includes(q) || (s.desc||'').toLowerCase().includes(q));
+  const grid = document.getElementById('sets-grid');
+  if(!filtered.length) {
+    grid.innerHTML = `<div class="empty-state" style="grid-column:1/-1">
+      <div class="big">📚</div>
+      <p>${sets.length ? 'No sets match your search.' : 'No sets yet — create your first one!'}</p>
+    </div>`;
+    return;
+  }
+  grid.innerHTML = filtered.map(s => `
+    <div class="set-card" onclick="openSet('${s.id}')">
+      <div class="set-card-title">${esc(s.title)}</div>
+      <div class="set-card-meta">${s.cards.length} term${s.cards.length!==1?'s':''}</div>
+      ${s.desc ? `<div class="set-card-meta">${esc(s.desc)}</div>` : ''}
+      <div class="set-card-preview">${s.cards.slice(0,3).map(c=>`<span class="set-tag">${esc(c.term.slice(0,20))}</span>`).join('')}</div>
+    </div>
+  `).join('');
+}
+function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
+// ---- CREATE ----
+function initCreate(id) {
+  editingId = id || null;
+  const set = id ? sets.find(s=>s.id===id) : null;
+  document.getElementById('create-title').textContent = id ? 'Edit Study Set' : 'Create a Study Set';
+  document.getElementById('set-title').value = set ? set.title : '';
+  document.getElementById('set-desc').value = set ? (set.desc||'') : '';
+  document.getElementById('delete-set-btn').style.display = id ? '' : 'none';
+  document.getElementById('cards-list').innerHTML = '';
+  const cards = set ? set.cards : [{term:'',def:''},{term:'',def:''}];
+  cards.forEach((c,i) => addCardRow(c.term, c.def));
+}
+
+function addCardRow(term='', def='') {
+  const list = document.getElementById('cards-list');
+  const idx = list.children.length + 1;
+  const div = document.createElement('div');
+  div.className = 'card-row';
+  div.innerHTML = `
+    <span class="card-num">${idx}</span>
+    <input class="form-input" placeholder="Term" value="${esc(term)}">
+    <input class="form-input" placeholder="Definition" value="${esc(def)}">
+    <button class="card-del-btn" onclick="this.parentElement.remove();reindex()">✕</button>
+  `;
+  list.appendChild(div);
+}
+
+function reindex() {
+  document.querySelectorAll('#cards-list .card-num').forEach((el,i) => el.textContent = i+1);
+}
+
+function saveSet() {
+  const title = document.getElementById('set-title').value.trim();
+  if(!title) { toast('Please add a title!'); return; }
+  const rows = document.querySelectorAll('#cards-list .card-row');
+  const cards = [];
+  rows.forEach(row => {
+    const [,termEl,defEl] = row.querySelectorAll('input');
+    const term = termEl.value.trim(), def = defEl.value.trim();
+    if(term && def) cards.push({term,def});
+  });
+  if(cards.length < 2) { toast('Add at least 2 complete cards!'); return; }
+  const desc = document.getElementById('set-desc').value.trim();
+  if(editingId) {
+    const s = sets.find(s=>s.id===editingId);
+    s.title = title; s.desc = desc; s.cards = cards; s.updated = Date.now();
+  } else {
+    sets.unshift({ id: uid(), title, desc, cards, created: Date.now() });
+  }
+  save();
+  toast(editingId ? 'Set updated!' : 'Set saved!');
+  openSet(editingId || sets[0].id);
+}
+
+function deleteCurrentSet() {
+  if(!confirm('Delete this set? This cannot be undone.')) return;
+  sets = sets.filter(s=>s.id!==editingId);
+  save(); toast('Set deleted.'); showPage('home');
+}
+
+// ---- SET VIEW ----
+function openSet(id) {
+  currentSetId = id;
+  currentSet = sets.find(s=>s.id===id);
+  if(!currentSet) { showPage('home'); return; }
+  document.getElementById('set-view-title').textContent = currentSet.title;
+  document.getElementById('set-view-meta').textContent = `${currentSet.cards.length} terms${currentSet.desc ? ' · '+currentSet.desc : ''}`;
+  setMode('flashcards');
+  showPage('set');
+}
+
+function editCurrentSet() { showPage('create'); initCreate(currentSetId); }
+
+function setMode(mode) {
+  ['flashcards','quiz','match','list'].forEach(m => {
+    document.getElementById('mode-'+m).classList.toggle('hidden', m !== mode);
+    document.querySelectorAll('.mode-tab')[['flashcards','quiz','match','list'].indexOf(m)].classList.toggle('active', m===mode);
+  });
+  if(mode==='flashcards') initFlashcards();
+  if(mode==='quiz') startQuiz();
+  if(mode==='match') startMatch();
+  if(mode==='list') renderList();
+}
+
+// ---- FLASHCARDS ----
+function initFlashcards() {
+  fcCards = [...currentSet.cards]; fcIndex = 0; fcFlipped = false;
+  renderFC();
+}
+function renderFC() {
+  const card = fcCards[fcIndex];
+  document.getElementById('fc-front').textContent = card.term;
+  document.getElementById('fc-back').textContent = card.def;
+  document.getElementById('flashcard').classList.remove('flipped');
+  fcFlipped = false;
+  document.getElementById('fc-counter').textContent = `${fcIndex+1} / ${fcCards.length}`;
+  document.getElementById('fc-prev').disabled = fcIndex === 0;
+  document.getElementById('fc-next').disabled = fcIndex === fcCards.length-1;
+  const pct = ((fcIndex+1)/fcCards.length*100).toFixed(0);
+  document.getElementById('fc-progress').style.width = pct+'%';
+}
+function flipCard() {
+  fcFlipped = !fcFlipped;
+  document.getElementById('flashcard').classList.toggle('flipped', fcFlipped);
+}
+function fcNav(dir) {
+  fcIndex = Math.max(0, Math.min(fcCards.length-1, fcIndex+dir));
+  renderFC();
+}
+function shuffleCards() { fcCards = shuffle([...currentSet.cards]); fcIndex=0; renderFC(); toast('Shuffled!'); }
+function fcReset() { fcCards = [...currentSet.cards]; fcIndex=0; renderFC(); }
+
+// ---- QUIZ ----
+function startQuiz() {
+  quizCards = shuffle([...currentSet.cards]); quizIndex=0; quizScore=0; quizAnswered=false;
+  document.getElementById('quiz-results').classList.add('hidden');
+  document.querySelectorAll('#mode-quiz > *:not(#quiz-results)').forEach(el => el.style.display='');
+  renderQuiz();
+}
+function renderQuiz() {
+  if(quizIndex >= quizCards.length) { showQuizResults(); return; }
+  quizAnswered = false;
+  const card = quizCards[quizIndex];
+  const others = shuffle(currentSet.cards.filter(c=>c.def!==card.def)).slice(0,3).map(c=>c.def);
+  const opts = shuffle([card.def, ...others]);
+  document.getElementById('quiz-question').textContent = card.term;
+  document.getElementById('quiz-feedback').textContent = '';
+  document.getElementById('quiz-feedback').className = 'quiz-feedback';
+  document.getElementById('quiz-next').style.display='none';
+  const pct = (quizIndex/quizCards.length*100).toFixed(0);
+  document.getElementById('quiz-progress').style.width=pct+'%';
+  document.getElementById('quiz-q-counter').textContent=`Question ${quizIndex+1} of ${quizCards.length}`;
+  document.getElementById('quiz-options').innerHTML = opts.map((o,i)=>`
+    <button class="quiz-opt" onclick="quizAnswer(this,'${esc(o)}','${esc(card.def)}')">${esc(o)}</button>
+  `).join('');
+}
+function quizAnswer(btn, chosen, correct) {
+  if(quizAnswered) return; quizAnswered = true;
+  document.querySelectorAll('.quiz-opt').forEach(b => b.disabled=true);
+  if(chosen===correct) {
+    btn.classList.add('correct'); quizScore++;
+    document.getElementById('quiz-feedback').textContent='✓ Correct!'; document.getElementById('quiz-feedback').className='quiz-feedback ok';
+  } else {
+    btn.classList.add('wrong');
+    document.querySelectorAll('.quiz-opt').forEach(b => { if(b.textContent===correct) b.classList.add('correct'); });
+    document.getElementById('quiz-feedback').textContent=`✗ The answer was: ${correct}`; document.getElementById('quiz-feedback').className='quiz-feedback bad';
+  }
+  document.getElementById('quiz-next').style.display='block';
+}
+function quizNext() { quizIndex++; renderQuiz(); }
+function showQuizResults() {
+  const pct = Math.round(quizScore/quizCards.length*100);
+  document.getElementById('quiz-progress').style.width='100%';
+  document.getElementById('quiz-results').classList.remove('hidden');
+  ['quiz-question','quiz-options','quiz-feedback','quiz-next','quiz-q-counter'].forEach(id=>{
+    const el=document.getElementById(id); if(el) el.style.display='none';
+  });
+  document.getElementById('quiz-score-val').textContent=`${quizScore}/${quizCards.length}`;
+  document.getElementById('quiz-score-msg').textContent=pct>=80?'Excellent work! 🎉':pct>=60?'Good effort — keep practicing!':'Keep studying, you\'ll get there!';
+}
+
+// ---- MATCH ----
+function startMatch() {
+  clearInterval(matchTimer); matchSelected=null; matchMatched=0; matchStartTime=Date.now();
+  document.getElementById('match-results').classList.add('hidden');
+  document.getElementById('match-grid').style.display='';
+  const pool = shuffle([...currentSet.cards]).slice(0,6);
+  const items = shuffle([...pool.map(c=>({id:c.term+'_t',pairId:c.term,text:c.term,type:'term'})),
+                          ...pool.map(c=>({id:c.term+'_d',pairId:c.term,text:c.def,type:'def'}))]);
+  document.getElementById('match-grid').innerHTML = items.map(item=>`
+    <div class="match-card" data-id="${esc(item.id)}" data-pair="${esc(item.pairId)}" onclick="matchClick(this)">${esc(item.text)}</div>
+  `).join('');
+  document.getElementById('match-timer').textContent='0.0s';
+  matchTimer = setInterval(()=>{
+    document.getElementById('match-timer').textContent=((Date.now()-matchStartTime)/1000).toFixed(1)+'s';
+  },100);
+}
+function matchClick(el) {
+  if(el.classList.contains('matched')) return;
+  if(matchSelected===el) { el.classList.remove('selected'); matchSelected=null; return; }
+  if(matchSelected===null) { el.classList.add('selected'); matchSelected=el; return; }
+  if(el.dataset.pair===matchSelected.dataset.pair && el.dataset.id!==matchSelected.dataset.id) {
+    el.classList.add('matched'); matchSelected.classList.remove('selected'); matchSelected.classList.add('matched');
+    matchMatched+=2; matchSelected=null;
+    const total = document.querySelectorAll('.match-card').length;
+    if(matchMatched===total) {
+      clearInterval(matchTimer);
+      const t=((Date.now()-matchStartTime)/1000).toFixed(1);
+      document.getElementById('match-time-val').textContent=t+'s';
+      document.getElementById('match-results').classList.remove('hidden');
+      document.getElementById('match-grid').style.display='none';
+    }
+  } else {
+    el.classList.add('wrong-flash'); matchSelected.classList.add('wrong-flash');
+    const prev=matchSelected; matchSelected=null;
+    setTimeout(()=>{ el.classList.remove('wrong-flash','selected'); prev.classList.remove('wrong-flash','selected'); },600);
+  }
+}
+
+// ---- LIST ----
+function renderList() {
+  document.getElementById('terms-list').innerHTML = currentSet.cards.map(c=>`
+    <div class="term-item">
+      <div class="term">${esc(c.term)}</div>
+      <div class="def">${esc(c.def)}</div>
+    </div>
+  `).join('');
+}
+
+// ---- INIT ----
+renderSets();
+
+// Demo set if first time
+if(!sets.length) {
+  sets.push({
+    id: uid(), title: 'Example: Solar System', desc: 'Planets and their order',
+    cards: [
+      {term:'Mercury',def:'Closest planet to the Sun'},{term:'Venus',def:'Hottest planet in the solar system'},
+      {term:'Earth',def:'The only planet known to support life'},{term:'Mars',def:'The Red Planet'},
+      {term:'Jupiter',def:'Largest planet in the solar system'},{term:'Saturn',def:'Known for its iconic ring system'},
+      {term:'Uranus',def:'Rotates on its side'},{term:'Neptune',def:'Farthest planet from the Sun'},
+    ], created: Date.now()
+  });
+  save(); renderSets();
+}
+</script>
+</body>
+</html>
